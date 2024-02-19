@@ -3,6 +3,7 @@ from quixstreams import Application
 from quixstreams.models.serializers.quix import JSONSerializer, SerializationContext
 import os
 import random
+import json
 import influxdb_client_3 as InfluxDBClient3
 from time import sleep
 
@@ -98,9 +99,10 @@ def main():
     producer = app.get_producer()
 
     with producer:
-        # Iterate over the data from query result
         for res in get_data():
-            for index, obj in enumerate(res):
+            # Parse the JSON string into a Python object
+            records = json.loads(res)
+            for index, obj in enumerate(records):
                 # Generate a unique message_key for each row
                 message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
                 print(f"producing: {obj}")
