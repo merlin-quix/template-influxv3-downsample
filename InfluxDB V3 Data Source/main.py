@@ -1,20 +1,8 @@
-# Importing necessary libraries and modules
-from quixstreams import Application
-from quixstreams.models.serializers.quix import JSONSerializer, SerializationContext
 import os
 import random
 import influxdb_client_3 as InfluxDBClient3
 from time import sleep
 
-# Create an Application
-app = Application.Quix(consumer_group="influxdb_sample", auto_create_topics=True)
-
-# Define a serializer for messages, using JSON Serializer for ease
-serializer = JSONSerializer()
-
-# Define the topic using the "output" environment variable
-topic_name = os.environ["output"]
-topic = app.topic(topic_name)
 
 influxdb3_client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
                          host=os.environ["INFLUXDB_HOST"],
