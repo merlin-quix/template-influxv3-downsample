@@ -4,7 +4,6 @@ import os
 import influxdb_client_3 as InfluxDBClient3
 import ast
 import datetime
-import pandas as pd
 
 app = Application.Quix(consumer_group="influx-destinationv4",
                        auto_offset_reset="earliest")
@@ -24,7 +23,7 @@ client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
 
 def send_data_to_influx(message):
     try:
-        quixtime = message['_time']
+        quixtime = message['time']
         # The Quix window function returns the time in a Unix timestamp
         # Howver InfluxDB does not interptet it correctly, it needs to be dateTime:RFC3339
         timestamp_ms = float(quixtime)
@@ -36,7 +35,7 @@ def send_data_to_influx(message):
         # Format the datetime object as a string in the desired format
         formatted_timestamp = dt_object.isoformat(timespec='milliseconds')
 
-        message['_time'] = formatted_timestamp
+        message['time'] = formatted_timestamp
 
         # Convert the dictionary to a DataFrame
         message_df = pd.DataFrame([message])
