@@ -12,6 +12,7 @@ input_topic = app.topic(os.environ["input"], value_deserializer=JSONDeserializer
 output_topic = app.topic(os.environ["output"], value_serializer=JSONSerializer())
 
 data_key = os.environ["data_key"]
+logger.info(f"Data key is: {data_key }")
 
 sdf = app.dataframe(input_topic)
 sdf = sdf.update(lambda value: logger.info(f"Input value received: {value}"))
