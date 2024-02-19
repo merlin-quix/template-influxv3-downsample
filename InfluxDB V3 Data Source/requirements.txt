@@ -1,4 +1,4 @@
-quixstreams==2.2.0a0
+quixstreams==2.3.1
 python-dotenv
 pandas
-influxdb-client
+influxdb_client_3
