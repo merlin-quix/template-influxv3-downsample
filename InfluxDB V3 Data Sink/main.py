@@ -32,15 +32,6 @@ def send_data_to_influx(message):
         quixtime = message['time']
         data_value = message[data_key]
 
-        # Log the types and values of tag_dict and data_value
-        logger.info(f"tag_dict type: {type(tag_dict)}, value: {tag_dict}")
-        logger.info(f"data_key type: {type(data_value)}, value: {data_value}")
-
-        try:
-            logger.info(f"Official message timestamp is {message.time}")
-        except Exception as e:
-            logger.info(f"Cannot get message timestamp because: {e}")
-
         # Using point dictionary structure
         points = {
             "measurement": measurement_name,
@@ -51,7 +42,7 @@ def send_data_to_influx(message):
 
         influx3_client.write(record=points, write_precision="ms")
         
-        print(f"{str(datetime.datetime.utcnow())}: Persisted {len(message)} rows.")
+        print(f"{str(datetime.datetime.utcnow())}: Persisted measurement to influx.")
     except Exception as e:
         print(f"{str(datetime.datetime.utcnow())}: Write failed")
         print(e)
