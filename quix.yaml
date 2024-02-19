@@ -6,51 +6,6 @@ metadata:
 
 # This section describes the Deployments of the data pipeline
 deployments:
-  - name: InfluxDB V3 Data Sink
-    application: InfluxDB V3 Data Sink
-    deploymentType: Service
-    version: 9586eec53a997b34acf41fcfb06816b7499d275b
-    resources:
-      cpu: 200
-      memory: 500
-      replicas: 1
-    desiredStatus: Stopped
-    variables:
-      - name: INFLUXDB_TAG_COLUMNS
-        inputType: FreeText
-        description: Name of the input topic to listen to.
-        required: false
-        value: '[]'
-      - name: INFLUXDB_MEASUREMENT_NAME
-        inputType: FreeText
-        description: ''
-        required: false
-        value: 10ms_activations
-      - name: INFLUXDB_HOST
-        inputType: FreeText
-        description: ''
-        required: true
-        value: https://us-east-1-1.aws.cloud2.influxdata.com
-      - name: INFLUXDB_ORG
-        inputType: FreeText
-        description: ''
-        required: true
-        value: ContentSquad
-      - name: INFLUXDB_DATABASE
-        inputType: FreeText
-        description: ''
-        required: false
-        value: ConversationStore
-      - name: input
-        inputType: InputTopic
-        description: ''
-        required: false
-        value: influx2-data-transformedv2
-      - name: INFLUXDB_TOKEN
-        inputType: Secret
-        description: ''
-        required: true
-        secretKey: influx_db3
   - name: InfluxDB V3 Data Source
     application: InfluxDB V3 Data Source
     deploymentType: Service
