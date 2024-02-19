@@ -40,7 +40,7 @@ deployments:
         inputType: FreeText
         description: ''
         required: false
-        value: 5h
+        value: 5m
       - name: INFLUXDB_DATABASE
         inputType: FreeText
         description: ''
