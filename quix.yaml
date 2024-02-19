@@ -51,31 +51,6 @@ deployments:
         description: ''
         required: true
         secretKey: influx_db3
-  - name: Downsampler
-    application: Downsampler
-    deploymentType: Service
-    version: 9586eec53a997b34acf41fcfb06816b7499d275b
-    resources:
-      cpu: 200
-      memory: 500
-      replicas: 1
-    desiredStatus: Stopped
-    variables:
-      - name: input
-        inputType: InputTopic
-        description: This is the input topic to read data from
-        required: true
-        value: influxv2-data
-      - name: output
-        inputType: OutputTopic
-        description: This is the output topic to write data to
-        required: true
-        value: influx2-data-transformedv2
-      - name: data_key
-        inputType: FreeText
-        description: ''
-        required: true
-        value: activation
   - name: InfluxDB V3 Data Source
     application: InfluxDB V3 Data Source
     deploymentType: Service
