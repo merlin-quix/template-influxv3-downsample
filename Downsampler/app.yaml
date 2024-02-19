@@ -2,7 +2,7 @@ name: Downsampler
 language: python
 variables:
   - name: input
-    inputType: OutputTopic
+    inputType: InputTopic
     description: This is the input topic to read data from
     defaultValue: activations-10ms-interval
     required: true
