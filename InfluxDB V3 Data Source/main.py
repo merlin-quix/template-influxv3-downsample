@@ -50,18 +50,10 @@ try:
     table = influxdb3_client.query(query=myquery,
                             language="influxql")
 
-    # Convert the result to a pandas dataframe. Required to be processed through Quix.
-    influx_df = table.to_pandas().drop(columns=["iox::measurement"])
-
-    # Convert Timestamp columns to ISO 8601 formatted strings
-    datetime_cols = influx_df.select_dtypes(include=['datetime64[ns]']).columns
-    for col in datetime_cols:
-        influx_df[col] = influx_df[col].dt.isoformat()
-
     # If there are rows to write to the stream at this time
-    if not influx_df.empty:
+    if not table.empty:
         print("query success")
-        print(f"Result: {influx_df}")
+        print(f"Result: {table}")
     else:
         print("No new data to publish.")
 
