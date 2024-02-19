@@ -36,6 +36,11 @@ variables:
     description: ''
     defaultValue: influx_db3
     required: true
+  - name: data_key
+    inputType: FreeText
+    description: ''
+    defaultValue: activation
+    required: true
 dockerfile: dockerfile
 runEntryPoint: main.py
 defaultFile: main.py
