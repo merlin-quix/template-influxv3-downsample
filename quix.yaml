@@ -14,7 +14,7 @@ deployments:
       cpu: 200
       memory: 500
       replicas: 1
-    desiredStatus: Running
+    desiredStatus: Stopped
     variables:
       - name: output
         inputType: OutputTopic
@@ -23,32 +23,32 @@ deployments:
         value: influxv2-data
       - name: INFLUXDB_ORG
         inputType: FreeText
-        description: ""
+        description: ''
         required: true
         value: Quixtest
       - name: INFLUXDB_HOST
         inputType: FreeText
-        description: ""
+        description: ''
         required: true
         value: https://influxdb-production-0ff2.up.railway.app
       - name: INFLUXDB_MEASUREMENT_NAME
         inputType: FreeText
-        description: ""
+        description: ''
         required: true
         value: 10ms_activations
       - name: task_interval
         inputType: FreeText
-        description: ""
+        description: ''
         required: false
         value: 10s
       - name: INFLUXDB_BUCKET
         inputType: FreeText
-        description: ""
+        description: ''
         required: true
         value: quixbucket
       - name: INFLUXDB_TOKEN
         inputType: Secret
-        description: ""
+        description: ''
         required: true
         secretKey: influx_db
   - name: InfluxDB V3 Data Sink
@@ -65,35 +65,35 @@ deployments:
         inputType: FreeText
         description: Name of the input topic to listen to.
         required: false
-        value: "[]"
+        value: '[]'
       - name: INFLUXDB_MEASUREMENT_NAME
         inputType: FreeText
-        description: ""
+        description: ''
         required: false
         value: 10ms_activations
       - name: INFLUXDB_HOST
         inputType: FreeText
-        description: ""
+        description: ''
         required: true
         value: https://us-east-1-1.aws.cloud2.influxdata.com
       - name: INFLUXDB_ORG
         inputType: FreeText
-        description: ""
+        description: ''
         required: true
         value: ContentSquad
       - name: INFLUXDB_DATABASE
         inputType: FreeText
-        description: ""
+        description: ''
         required: false
         value: ConversationStore
       - name: input
         inputType: InputTopic
-        description: ""
+        description: ''
         required: false
         value: influx2-data-transformedv2
       - name: INFLUXDB_TOKEN
         inputType: Secret
-        description: ""
+        description: ''
         required: true
         secretKey: influx_db3
   - name: Downsampler
@@ -118,7 +118,7 @@ deployments:
         value: influx2-data-transformedv2
       - name: data_key
         inputType: FreeText
-        description: ""
+        description: ''
         required: true
         value: activation
 
