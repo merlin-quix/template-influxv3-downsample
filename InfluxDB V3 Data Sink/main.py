@@ -9,7 +9,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = Application.Quix(consumer_group="influx-destinationv4",
+app = Application.Quix(consumer_group="influx-destinationv5",
                        auto_offset_reset="earliest")
 
 input_topic = app.topic(os.environ["input"], value_deserializer=JSONDeserializer())
