@@ -54,7 +54,7 @@ deployments:
   - name: Downsampler
     application: Downsampler
     deploymentType: Service
-    version: c333aeabeca53205e532fc65c13f9afc693793c3
+    version: 45bc6c7af1c2e3c99d639c32a19b5a315d7790d1
     resources:
       cpu: 200
       memory: 500
@@ -62,7 +62,7 @@ deployments:
     desiredStatus: Running
     variables:
       - name: input
-        inputType: OutputTopic
+        inputType: InputTopic
         description: This is the input topic to read data from
         required: true
         value: activations-10ms-interval-v1
