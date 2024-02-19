@@ -9,7 +9,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = Application.Quix(consumer_group="influx-destinationv5",
+app = Application.Quix(consumer_group="influx-destinationv6",
                        auto_offset_reset="earliest")
 
 input_topic = app.topic(os.environ["input"], value_deserializer=JSONDeserializer())
@@ -30,6 +30,11 @@ def send_data_to_influx(message):
     logger.info(f"Processing message: {message}")
     try:
         quixtime = message['time']
+        data_value = message[data_key]
+
+        # Log the types and values of tag_dict and data_value
+        logger.info(f"tag_dict type: {type(tag_dict)}, value: {tag_dict}")
+        logger.info(f"data_key type: {type(data_value)}, value: {data_value}")
 
         try:
             logger.info(f"Official message timestamp is {message.time}")
@@ -38,11 +43,11 @@ def send_data_to_influx(message):
 
         # Using point dictionary structure
         points = {
-                "measurement": measurement_name,
-                "tags": tag_dict,
-                "fields": {data_key: message[data_key]},
-                "time": quixtime
-                }
+            "measurement": measurement_name,
+            "tags": tag_dict,
+            "fields": {data_key: data_value},
+            "time": quixtime
+        }
 
         influx3_client.write(record=points, write_precision="ms")
         
