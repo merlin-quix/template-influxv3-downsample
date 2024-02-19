@@ -54,7 +54,7 @@ deployments:
   - name: Downsampler
     application: Downsampler
     deploymentType: Service
-    version: 52c682789b7e61d08413a00ab66657ceca8bc02c
+    version: c333aeabeca53205e532fc65c13f9afc693793c3
     resources:
       cpu: 200
       memory: 500
