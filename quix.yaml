@@ -1,0 +1,177 @@
+# Quix Project Descriptor
+# This file describes the data pipeline and configuration of resources of a Quix Project.
+
+metadata:
+  version: 1.0
+
+# This section describes the Deployments of the data pipeline
+deployments:
+  - name: InfluxDB V2 Data Source
+    application: InfluxDB V2 Data Source
+    deploymentType: Service
+    version: b896bb20056854ce5379c9719efa53a964f3fa50
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    desiredStatus: Running
+    variables:
+      - name: output
+        inputType: OutputTopic
+        description: Name of the output topic to write into
+        required: true
+        value: influxv2-data
+      - name: INFLUXDB_ORG
+        inputType: FreeText
+        description: ""
+        required: true
+        value: Quixtest
+      - name: INFLUXDB_HOST
+        inputType: FreeText
+        description: ""
+        required: true
+        value: https://influxdb-production-0ff2.up.railway.app
+      - name: INFLUXDB_MEASUREMENT_NAME
+        inputType: FreeText
+        description: ""
+        required: true
+        value: 10ms_activations
+      - name: task_interval
+        inputType: FreeText
+        description: ""
+        required: false
+        value: 10s
+      - name: INFLUXDB_BUCKET
+        inputType: FreeText
+        description: ""
+        required: true
+        value: quixbucket
+      - name: INFLUXDB_TOKEN
+        inputType: Secret
+        description: ""
+        required: true
+        secretKey: influx_db
+  - name: InfluxDB V3 Data Sink
+    application: InfluxDB V3 Data Sink
+    deploymentType: Service
+    version: c2c26810462833b37f28a26518c0426a0c8c64d8
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    desiredStatus: Running
+    variables:
+      - name: INFLUXDB_TAG_COLUMNS
+        inputType: FreeText
+        description: Name of the input topic to listen to.
+        required: false
+        value: "[]"
+      - name: INFLUXDB_MEASUREMENT_NAME
+        inputType: FreeText
+        description: ""
+        required: false
+        value: 10ms_activations
+      - name: INFLUXDB_HOST
+        inputType: FreeText
+        description: ""
+        required: true
+        value: https://us-east-1-1.aws.cloud2.influxdata.com
+      - name: INFLUXDB_ORG
+        inputType: FreeText
+        description: ""
+        required: true
+        value: ContentSquad
+      - name: INFLUXDB_DATABASE
+        inputType: FreeText
+        description: ""
+        required: false
+        value: ConversationStore
+      - name: input
+        inputType: InputTopic
+        description: ""
+        required: false
+        value: influx2-data-transformedv2
+      - name: INFLUXDB_TOKEN
+        inputType: Secret
+        description: ""
+        required: true
+        secretKey: influx_db3
+  - name: Downsampler
+    application: Down-sampling
+    deploymentType: Service
+    version: 8b980dc45fffeed5036d98af0a142d197dc955c9
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    desiredStatus: Running
+    variables:
+      - name: input
+        inputType: InputTopic
+        description: This is the input topic to read data from
+        required: true
+        value: influxv2-data
+      - name: output
+        inputType: OutputTopic
+        description: This is the output topic to write data to
+        required: true
+        value: influx2-data-transformedv2
+      - name: data_key
+        inputType: FreeText
+        description: ""
+        required: true
+        value: activation
+
+# This section describes the Topics of the data pipeline
+topics:
+  - name: counted-names
+    persisted: false
+    configuration:
+      partitions: 1
+      replicationFactor: 2
+      retentionInMinutes: 1440
+      retentionInBytes: 52428800
+  - name: csv-data
+    persisted: false
+    configuration:
+      partitions: 2
+      replicationFactor: 2
+      retentionInMinutes: 10080
+      retentionInBytes: 52428800
+  - name: influxv2-data
+    persisted: false
+    configuration:
+      partitions: 1
+      replicationFactor: 2
+      retentionInMinutes: 1440
+      retentionInBytes: 52428800
+  - name: influx2-data-transformed
+    persisted: false
+    configuration:
+      partitions: 1
+      replicationFactor: 2
+      retentionInMinutes: 1440
+      retentionInBytes: 52428800
+  - name: changelog__down-sampling-consumer-group--influxv2-data--tumbling_window_100_mean
+    persisted: false
+    configuration:
+      partitions: 1
+      replicationFactor: 2
+      retentionInMinutes: 1440
+      retentionInBytes: 52428800
+      cleanupPolicy: Compact
+  - name: changelog__down-sampling-consumer-groupv1--influxv2-data--tumbling_window_100_mean
+    persisted: false
+    configuration:
+      partitions: 1
+      replicationFactor: 2
+      retentionInMinutes: 1440
+      retentionInBytes: 52428800
+      cleanupPolicy: Compact
+  - name: influx2-data-transformedv2
+    persisted: false
+    configuration:
+      partitions: 1
+      replicationFactor: 2
+      retentionInMinutes: 1440
+      retentionInBytes: 52428800

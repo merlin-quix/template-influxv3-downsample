@@ -1,0 +1,41 @@
+name: InfluxDB V2 Data Source
+language: python
+variables:
+  - name: output
+    inputType: OutputTopic
+    description: Name of the output topic to write into
+    defaultValue: influxv2-data
+    required: true
+  - name: INFLUXDB_ORG
+    inputType: FreeText
+    description: ''
+    defaultValue: Quixtest
+    required: true
+  - name: INFLUXDB_HOST
+    inputType: FreeText
+    description: ''
+    defaultValue: https://influxdb-production-0ff2.up.railway.app
+    required: true
+  - name: INFLUXDB_MEASUREMENT_NAME
+    inputType: FreeText
+    description: ''
+    defaultValue: measurement1
+    required: true
+  - name: task_interval
+    inputType: FreeText
+    description: ''
+    defaultValue: 5h
+    required: false
+  - name: INFLUXDB_BUCKET
+    inputType: FreeText
+    description: ''
+    defaultValue: quixbucket
+    required: true
+  - name: INFLUXDB_TOKEN
+    inputType: Secret
+    description: ''
+    defaultValue: influx_db
+    required: true
+dockerfile: dockerfile
+runEntryPoint: main.py
+defaultFile: main.py

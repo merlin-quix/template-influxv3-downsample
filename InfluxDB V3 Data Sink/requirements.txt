@@ -1,0 +1,5 @@
+quixstreams==2.2.0a0
+python-dotenv
+influxdb3-python==0.3.6
+pandas
+polars
