@@ -101,6 +101,56 @@ deployments:
         description: ''
         required: true
         value: activation
+  - name: InfluxDB V3 Data Sink
+    application: InfluxDB V3 Data Sink
+    deploymentType: Service
+    version: 1f43697ccbf6ececcea88f5c472a1935eb8c9c4d
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    desiredStatus: Running
+    variables:
+      - name: INFLUXDB_TAG_COLUMNS
+        inputType: FreeText
+        description: 'A dictonary containing tags and their expected values. E.g {"room": "Kitchen", "sensor": "K001"}'
+        required: false
+        value: '{}'
+      - name: INFLUXDB_MEASUREMENT_NAME
+        inputType: FreeText
+        description: ''
+        required: true
+        value: 100ms_activations
+      - name: INFLUXDB_HOST
+        inputType: FreeText
+        description: ''
+        required: true
+        value: https://us-east-1-1.aws.cloud2.influxdata.com
+      - name: INFLUXDB_ORG
+        inputType: FreeText
+        description: ''
+        required: true
+        value: ContentSquad
+      - name: INFLUXDB_DATABASE
+        inputType: FreeText
+        description: ''
+        required: true
+        value: connector-testing-sink
+      - name: input
+        inputType: InputTopic
+        description: ''
+        required: true
+        value: activations-100ms-interval
+      - name: INFLUXDB_TOKEN
+        inputType: Secret
+        description: ''
+        required: true
+        secretKey: influx_db3
+      - name: data_key
+        inputType: FreeText
+        description: ''
+        required: true
+        value: activation
 
 # This section describes the Topics of the data pipeline
 topics:
