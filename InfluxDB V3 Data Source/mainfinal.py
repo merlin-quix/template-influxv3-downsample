@@ -60,22 +60,21 @@ def get_data():
     # Run in a loop until the main thread is terminated
     while run:
         try:
+            myquery = f'SELECT * FROM "10ms_activations" WHERE time >= now() - {interval}'
+            print(f"sending query {myquery}")
             # Query InfluxDB 3.0 using influxql or sql
-            table = influxdb3_client.query(query=f'SELECT * FROM "{measurement_name}" WHERE time >= now() - {interval}',
-                                 language="influxql")
+            table = influxdb3_client.query(
+                                    query=myquery,
+                                    mode="pandas",
+                                    language="influxql")
 
-            # Convert the result to a pandas dataframe. Required to be processed through Quix.
-            influx_df = table.to_pandas().drop(columns=["iox::measurement"])
-
-            # Convert Timestamp columns to ISO 8601 formatted strings
-            datetime_cols = influx_df.select_dtypes(include=['datetime64[ns]']).columns
-            for col in datetime_cols:
-                influx_df[col] = influx_df[col].dt.isoformat()
+            table = table.drop(columns=["iox::measurement"])
 
             # If there are rows to write to the stream at this time
-            if not influx_df.empty:
-                yield influx_df
+            if not table.empty:
+                json_result = table.to_json(orient='records', date_format='iso')
                 print("query success")
+                print(f"Result: {json_result}")
             else:
                 print("No new data to publish.")
 
