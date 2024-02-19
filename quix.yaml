@@ -76,6 +76,31 @@ deployments:
         description: ''
         required: true
         value: activation
+  - name: Downsampler Current
+    application: Downsampler
+    deploymentType: Service
+    version: 764f0c39284bbc7fbe88db5861cd50560512798b
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    desiredStatus: Running
+    variables:
+      - name: input
+        inputType: OutputTopic
+        description: This is the input topic to read data from
+        required: true
+        value: activations-10ms-interval
+      - name: output
+        inputType: OutputTopic
+        description: This is the output topic to write data to
+        required: true
+        value: activations-100ms-interval
+      - name: data_key
+        inputType: FreeText
+        description: ''
+        required: true
+        value: activation
 
 # This section describes the Topics of the data pipeline
 topics:
