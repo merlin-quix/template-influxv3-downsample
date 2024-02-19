@@ -53,7 +53,7 @@ def interval_to_seconds(interval: str) -> int:
 interval_seconds = interval_to_seconds(interval)
 
 try:
-    myquery = "SELECT * FROM '{measurement_name}' WHERE time >= now() - interval '{interval}'"
+    myquery = f"SELECT * FROM '{measurement_name}' WHERE time >= now() - interval '{interval}'"
     print(f"sending query {myquery}")
     # Query InfluxDB 3.0 using influxql or sql
     table = influxdb3_client.query(query=myquery,
