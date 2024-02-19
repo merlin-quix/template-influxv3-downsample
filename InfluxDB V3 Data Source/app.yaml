@@ -19,7 +19,7 @@ variables:
   - name: INFLUXDB_MEASUREMENT_NAME
     inputType: FreeText
     description: ''
-    defaultValue: measurement1
+    defaultValue: activation
     required: true
   - name: task_interval
     inputType: FreeText
