@@ -9,7 +9,7 @@ variables:
   - name: output
     inputType: OutputTopic
     description: This is the output topic to write data to
-    defaultValue: influxdb-v3-downsampled
+    defaultValue: activations-100ms-interval
     required: true
   - name: data_key
     inputType: FreeText
