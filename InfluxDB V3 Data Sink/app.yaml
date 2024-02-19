@@ -29,8 +29,8 @@ variables:
   - name: input
     inputType: InputTopic
     description: ''
-    defaultValue: influx2-data-transformedv2
-    required: false
+    defaultValue: activations-100ms-interval
+    required: true
   - name: INFLUXDB_TOKEN
     inputType: Secret
     description: ''
