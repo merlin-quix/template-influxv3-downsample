@@ -74,6 +74,7 @@ def get_data():
             if not influx_df.empty:
                 yield influx_df
                 print("query success")
+                print(f"Result: {table}")
             else:
                 print("No new data to publish.")
 
@@ -85,43 +86,3 @@ def get_data():
             print(f"error: {e}", flush=True)
             sleep(1)
 
-def main():
-    """
-    Read data from the Query and publish it to Kafka
-    """
-
-    # Create a pre-configured Producer object.
-    # Producer is already setup to use Quix brokers.
-    # It will also ensure that the topics exist before producing to them if
-    # Application.Quix is initialized with "auto_create_topics=True".
-    producer = app.get_producer()
-
-    with producer:
-    # Iterate over the data from query result
-        for df in get_data():
-            print(f"DATAFRAME:\n{df}\n")
-            # Generate a unique message_key for each row
-            for index, row in df.iterrows():
-                message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
-
-                # Convert the row to a dictionary
-                row_data = row.to_dict()
-
-                # Serialize row value to bytes
-                serialized_value = serializer(
-                    value=row_data, ctx=SerializationContext(topic=topic.name)
-                )
-
-                # publish the data to the topic
-                producer.produce(
-                    topic=topic.name,
-                    key=message_key,
-                    value=serialized_value,
-                )
-
-
-if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("Exiting.")
