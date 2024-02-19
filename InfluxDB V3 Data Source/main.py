@@ -47,7 +47,9 @@ try:
     myquery = f'SELECT * FROM "10ms_activations" WHERE time >= now() - {interval}'
     print(f"sending query {myquery}")
     # Query InfluxDB 3.0 using influxql or sql
-    table = influxdb3_client.query(query=myquery,
+    table = influxdb3_client.query(
+                            query=myquery,
+                            mode="pandas",
                             language="influxql")
 
     # If there are rows to write to the stream at this time
