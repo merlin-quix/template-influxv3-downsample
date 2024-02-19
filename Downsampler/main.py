@@ -29,8 +29,8 @@ sdf = (
     .mean()
 
     # Emit results only when the 100-millisecond window has elapsed
-    .final()
-    # .current() for debug purposes.
+    #.final()
+    .current() #for debug purposes.
 )
 
 sdf = sdf.apply(
