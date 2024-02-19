@@ -65,12 +65,12 @@ deployments:
         inputType: OutputTopic
         description: This is the input topic to read data from
         required: true
-        value: activations-10ms-interval
+        value: activations-10ms-interval-v1
       - name: output
         inputType: OutputTopic
         description: This is the output topic to write data to
         required: true
-        value: activations-10ms-interval-v1
+        value: activations-100ms-interval
       - name: data_key
         inputType: FreeText
         description: ''
