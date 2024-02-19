@@ -7,15 +7,16 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = Application.Quix(consumer_group="downsampling-consumer-groupv4", auto_offset_reset="earliest")
+app = Application.Quix(consumer_group="downsampling-consumer-groupv5", auto_offset_reset="earliest")
 input_topic = app.topic(os.environ["input"], value_deserializer=JSONDeserializer())
 output_topic = app.topic(os.environ["output"], value_serializer=JSONSerializer())
 
 data_key = os.environ["data_key"]
-logger.info(f"Data key is: {data_key }")
+logger.info(f"Data key is: {data_key}")
 
 sdf = app.dataframe(input_topic)
 sdf = sdf.update(lambda value: logger.info(f"Input value received: {value}"))
+sdf = sdf.update(lambda value: logger.info(f"Timeseries value is: {value[data_key]}"))
 
 sdf = (
     # Extract the relevant field from the record
@@ -37,7 +38,6 @@ sdf = sdf.apply(
         f"{data_key}": value["value"], 
     }
 )
-
 
 # Produce the result to the output topic
 sdf = sdf.to_topic(output_topic)
