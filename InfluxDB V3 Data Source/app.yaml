@@ -34,7 +34,7 @@ variables:
   - name: INFLUXDB_TOKEN
     inputType: Secret
     description: ''
-    defaultValue: influx_db
+    defaultValue: influx_db3
     required: true
 dockerfile: dockerfile
 runEntryPoint: main.py
