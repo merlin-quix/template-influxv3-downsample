@@ -73,8 +73,8 @@ def get_data():
             # If there are rows to write to the stream at this time
             if not table.empty:
                 json_result = table.to_json(orient='records', date_format='iso')
+                yield json_result
                 print("query success")
-                print(f"Result: {json_result}")
             else:
                 print("No new data to publish.")
 
@@ -99,26 +99,21 @@ def main():
 
     with producer:
     # Iterate over the data from query result
-        for df in get_data():
-            print(f"DATAFRAME:\n{df}\n")
+        for obj in get_data():
             # Generate a unique message_key for each row
-            for index, row in df.iterrows():
-                message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
+            message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
 
-                # Convert the row to a dictionary
-                row_data = row.to_dict()
+            # Serialize row value to bytes
+            serialized_value = serializer(
+                value=obj ctx=SerializationContext(topic=topic.name)
+            )
 
-                # Serialize row value to bytes
-                serialized_value = serializer(
-                    value=row_data, ctx=SerializationContext(topic=topic.name)
-                )
-
-                # publish the data to the topic
-                producer.produce(
-                    topic=topic.name,
-                    key=message_key,
-                    value=serialized_value,
-                )
+            # publish the data to the topic
+            producer.produce(
+                topic=topic.name,
+                key=message_key,
+                value=serialized_value,
+            )
 
 
 if __name__ == "__main__":
