@@ -67,9 +67,8 @@ try:
 
     # If there are rows to write to the stream at this time
     if not influx_df.empty:
-        yield influx_df
         print("query success")
-        print(f"Result: {table}")
+        print(f"Result: {influx_df}")
     else:
         print("No new data to publish.")
 
