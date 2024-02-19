@@ -102,6 +102,7 @@ def main():
         for index, obj in enumerate(get_data()):
             # Generate a unique message_key for each row
             message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
+            print(f"producing: {obj}")
 
             # Serialize row value to bytes
             serialized_value = serializer(
