@@ -2,9 +2,9 @@ name: Downsampler
 language: python
 variables:
   - name: input
-    inputType: InputTopic
+    inputType: OutputTopic
     description: This is the input topic to read data from
-    defaultValue: influxdb-v3-source-data
+    defaultValue: activations-10ms-interval
     required: true
   - name: output
     inputType: OutputTopic
