@@ -24,7 +24,7 @@ variables:
   - name: task_interval
     inputType: FreeText
     description: ''
-    defaultValue: 5h
+    defaultValue: 5 minutes
     required: false
   - name: INFLUXDB_BUCKET
     inputType: FreeText
