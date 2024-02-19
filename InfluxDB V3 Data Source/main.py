@@ -54,8 +54,9 @@ try:
 
     # If there are rows to write to the stream at this time
     if not table.empty:
+        json_result = table.to_json(orient='records', date_format='iso')
         print("query success")
-        print(f"Result: {table}")
+        print(f"Result: {json_result}")
     else:
         print("No new data to publish.")
 
