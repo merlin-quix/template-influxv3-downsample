@@ -16,7 +16,7 @@ serializer = JSONSerializer()
 topic_name = os.environ["output"]
 topic = app.topic(topic_name)
 
-client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
+influxdb3_client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
                          host=os.environ["INFLUXDB_HOST"],
                          org=os.environ["INFLUXDB_ORG"],
                          database=os.environ["INFLUXDB_DATABASE"])
@@ -62,7 +62,7 @@ def get_data():
     while run:
         try:
             # Query InfluxDB 3.0 using influxql or sql
-            table = client.query(query=f'SELECT * FROM "{measurement_name}" WHERE time >= now() - {interval}',
+            table = influxdb3_client.query(query=f'SELECT * FROM "{measurement_name}" WHERE time >= now() - {interval}',
                                  language="influxql")
 
             # Convert the result to a pandas dataframe. Required to be processed through Quix.
