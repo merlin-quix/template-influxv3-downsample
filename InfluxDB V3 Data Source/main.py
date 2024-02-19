@@ -98,24 +98,24 @@ def main():
     producer = app.get_producer()
 
     with producer:
-    # Iterate over the data from query result
-        for index, obj in enumerate(get_data()):
-            # Generate a unique message_key for each row
-            message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
-            print(f"producing: {obj}")
+        # Iterate over the data from query result
+        for res in get_data():
+            for index, obj in enumerate(res):
+                # Generate a unique message_key for each row
+                message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
+                print(f"producing: {obj}")
 
-            # Serialize row value to bytes
-            serialized_value = serializer(
-                value=obj, ctx=SerializationContext(topic=topic.name)
-            )
+                # Serialize row value to bytes
+                serialized_value = serializer(
+                    value=obj, ctx=SerializationContext(topic=topic.name)
+                )
 
-            # publish the data to the topic
-            producer.produce(
-                topic=topic.name,
-                key=message_key,
-                value=serialized_value,
-            )
-
+                # publish the data to the topic
+                producer.produce(
+                    topic=topic.name,
+                    key=message_key,
+                    value=serialized_value,
+                )
 
 if __name__ == "__main__":
     try:
