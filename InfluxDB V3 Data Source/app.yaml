@@ -1,4 +1,4 @@
-name: InfluxDB V2 Data Source
+name: InfluxDB V3 Data Source
 language: python
 variables:
   - name: output
