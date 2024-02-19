@@ -26,10 +26,10 @@ variables:
     description: ''
     defaultValue: 5 minutes
     required: false
-  - name: INFLUXDB_BUCKET
+  - name: INFLUXDB_DATABASE
     inputType: FreeText
     description: ''
-    defaultValue: quixbucket
+    defaultValue: ConnectorTesting
     required: true
   - name: INFLUXDB_TOKEN
     inputType: Secret
