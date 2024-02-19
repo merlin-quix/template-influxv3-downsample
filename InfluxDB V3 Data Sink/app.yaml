@@ -24,8 +24,8 @@ variables:
   - name: INFLUXDB_DATABASE
     inputType: FreeText
     description: ''
-    defaultValue: ConversationStore
-    required: false
+    defaultValue: connector-testing-sink
+    required: true
   - name: input
     inputType: InputTopic
     description: ''
