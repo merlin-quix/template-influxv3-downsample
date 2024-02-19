@@ -4,7 +4,7 @@ variables:
   - name: input
     inputType: InputTopic
     description: This is the input topic to read data from
-    defaultValue: influxv2-data
+    defaultValue: influxdb-v3-source-data
     required: true
   - name: output
     inputType: OutputTopic
