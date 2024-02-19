@@ -51,6 +51,31 @@ deployments:
         description: ''
         required: true
         secretKey: influx_db3
+  - name: Downsampler
+    application: Downsampler
+    deploymentType: Service
+    version: 807c9317d645c89401ec5ddf98e9c96ecdd18150
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    desiredStatus: Running
+    variables:
+      - name: input
+        inputType: OutputTopic
+        description: This is the input topic to read data from
+        required: true
+        value: activations-10ms-interval
+      - name: output
+        inputType: OutputTopic
+        description: This is the output topic to write data to
+        required: true
+        value: activations-100ms-interval
+      - name: data_key
+        inputType: FreeText
+        description: ''
+        required: true
+        value: activation
 
 # This section describes the Topics of the data pipeline
 topics:
