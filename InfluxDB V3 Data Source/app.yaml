@@ -4,7 +4,7 @@ variables:
   - name: output
     inputType: OutputTopic
     description: Name of the output topic to write into
-    defaultValue: influxdb-v3-source-data
+    defaultValue: activations-10ms-interval
     required: true
   - name: INFLUXDB_ORG
     inputType: FreeText
