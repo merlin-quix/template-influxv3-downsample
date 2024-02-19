@@ -27,6 +27,7 @@ influx3_client = InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
                          database=os.environ["INFLUXDB_DATABASE"])
 
 def send_data_to_influx(message):
+    logger.info(f"Processing message: {message}")
     try:
         quixtime = message['time']
 
