@@ -70,7 +70,7 @@ deployments:
         inputType: OutputTopic
         description: This is the output topic to write data to
         required: true
-        value: activations-100ms-interval
+        value: activations-10ms-interval-v1
       - name: data_key
         inputType: FreeText
         description: ''
