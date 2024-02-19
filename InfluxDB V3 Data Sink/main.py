@@ -11,7 +11,7 @@ app = Application.Quix(consumer_group="influx-destinationv4",
 input_topic = app.topic(os.environ["input"], value_deserializer=JSONDeserializer())
 
 # Read the environment variable and convert it to a list
-tag_columns = ast.literal_eval(os.environ.get('INFLUXDB_TAG_COLUMNS', "[]"))
+tag_columns = ast.literal_eval(os.environ.get('INFLUXDB_TAG_COLUMNS', "{}"))
 
 # Read the environment variable for measurement name and convert it to a list
 measurement_name = os.environ.get('INFLUXDB_MEASUREMENT_NAME', os.environ["input"])
