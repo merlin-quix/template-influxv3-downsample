@@ -31,8 +31,8 @@ sdf = (
 
 sdf = sdf.apply(
     lambda value: {
-        "_measurement": "10ms_activations",
-        "_time": value["end"],
+        "measurement": "10ms_activations",
+        "time": value["end"],
         f"{data_key}": value["value"], 
     }
 )
