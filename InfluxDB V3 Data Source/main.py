@@ -52,37 +52,32 @@ def interval_to_seconds(interval: str) -> int:
 
 interval_seconds = interval_to_seconds(interval)
 
-# Function to fetch data from InfluxDB and send it to Quix
-# It runs in a continuous loop, periodically fetching data based on the interval.
-def get_data():
-    # Run in a loop until the main thread is terminated
-    while run:
-        try:
-            # Query InfluxDB 3.0 using influxql or sql
-            table = influxdb3_client.query(query=f'SELECT * FROM "{measurement_name}" WHERE time >= now() - {interval}',
-                                 language="influxql")
+try:
+    # Query InfluxDB 3.0 using influxql or sql
+    table = influxdb3_client.query(query=f"SELECT * FROM "{measurement_name}" WHERE time >= now() - interval '{interval}'",
+                            language="influxql")
 
-            # Convert the result to a pandas dataframe. Required to be processed through Quix.
-            influx_df = table.to_pandas().drop(columns=["iox::measurement"])
+    # Convert the result to a pandas dataframe. Required to be processed through Quix.
+    influx_df = table.to_pandas().drop(columns=["iox::measurement"])
 
-            # Convert Timestamp columns to ISO 8601 formatted strings
-            datetime_cols = influx_df.select_dtypes(include=['datetime64[ns]']).columns
-            for col in datetime_cols:
-                influx_df[col] = influx_df[col].dt.isoformat()
+    # Convert Timestamp columns to ISO 8601 formatted strings
+    datetime_cols = influx_df.select_dtypes(include=['datetime64[ns]']).columns
+    for col in datetime_cols:
+        influx_df[col] = influx_df[col].dt.isoformat()
 
-            # If there are rows to write to the stream at this time
-            if not influx_df.empty:
-                yield influx_df
-                print("query success")
-                print(f"Result: {table}")
-            else:
-                print("No new data to publish.")
+    # If there are rows to write to the stream at this time
+    if not influx_df.empty:
+        yield influx_df
+        print("query success")
+        print(f"Result: {table}")
+    else:
+        print("No new data to publish.")
 
-            # Wait for the next interval
-            sleep(interval_seconds)
+    # Wait for the next interval
+    sleep(interval_seconds)
 
-        except Exception as e:
-            print("query failed", flush=True)
-            print(f"error: {e}", flush=True)
-            sleep(1)
+except Exception as e:
+    print("query failed", flush=True)
+    print(f"error: {e}", flush=True)
+    sleep(1)
 
