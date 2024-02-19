@@ -51,7 +51,7 @@ try:
                             language="influxql")
 
     # If there are rows to write to the stream at this time
-    if not table.empty:
+    if table:
         print("query success")
         print(f"Result: {table}")
     else:
