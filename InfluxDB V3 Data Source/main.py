@@ -52,6 +52,8 @@ try:
                             mode="pandas",
                             language="influxql")
 
+    table.drop(columns=["iox::measurement"])
+
     # If there are rows to write to the stream at this time
     if not table.empty:
         json_result = table.to_json(orient='records', date_format='iso')
