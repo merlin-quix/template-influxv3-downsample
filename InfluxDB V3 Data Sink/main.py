@@ -1,7 +1,7 @@
 from quixstreams import Application
 from quixstreams.models.serializers.quix import JSONDeserializer
 import os
-import influxdb_client_3 as InfluxDBClient3
+from influxdb_client_3 import Point, InfluxDBClient3
 import ast
 import datetime
 
@@ -16,7 +16,7 @@ tag_columns = ast.literal_eval(os.environ.get('INFLUXDB_TAG_COLUMNS', "[]"))
 # Read the environment variable for measurement name and convert it to a list
 measurement_name = os.environ.get('INFLUXDB_MEASUREMENT_NAME', os.environ["input"])
                                            
-client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
+influx3_client = InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
                          host=os.environ["INFLUXDB_HOST"],
                          org=os.environ["INFLUXDB_ORG"],
                          database=os.environ["INFLUXDB_DATABASE"])
@@ -35,20 +35,10 @@ def send_data_to_influx(message):
         # Format the datetime object as a string in the desired format
         formatted_timestamp = dt_object.isoformat(timespec='milliseconds')
 
-        message['time'] = formatted_timestamp
+        point = Point(measurement_name).tag("room", "Kitchen").field("temp", 72)
 
-        # Convert the dictionary to a DataFrame
-        message_df = pd.DataFrame([message])
-
-        # Reformat the dataframe to match the InfluxDB format
-        message_df = message_df.rename(columns={'_time': 'time'})
-        message_df = message_df.set_index('time')
-
-        client._write_api.write(
-            bucket=os.environ["INFLUXDB_DATABASE"], 
-            record=message_df, 
-            data_frame_measurement_name=measurement_name, 
-            data_frame_tag_columns=tag_columns)
+        influx3_client.write(point)
+        
 
         print(f"{str(datetime.datetime.utcnow())}: Persisted {message_df.shape[0]} rows.")
     except Exception as e:
