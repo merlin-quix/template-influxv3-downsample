@@ -6,51 +6,6 @@ metadata:
 
 # This section describes the Deployments of the data pipeline
 deployments:
-  - name: InfluxDB V3 Data Source
-    application: InfluxDB V3 Data Source
-    deploymentType: Service
-    version: 9586eec53a997b34acf41fcfb06816b7499d275b
-    resources:
-      cpu: 200
-      memory: 500
-      replicas: 1
-    desiredStatus: Stopped
-    variables:
-      - name: output
-        inputType: OutputTopic
-        description: Name of the output topic to write into
-        required: true
-        value: influxv2-data
-      - name: INFLUXDB_ORG
-        inputType: FreeText
-        description: ''
-        required: true
-        value: Quixtest
-      - name: INFLUXDB_HOST
-        inputType: FreeText
-        description: ''
-        required: true
-        value: https://influxdb-production-0ff2.up.railway.app
-      - name: INFLUXDB_MEASUREMENT_NAME
-        inputType: FreeText
-        description: ''
-        required: true
-        value: 10ms_activations
-      - name: task_interval
-        inputType: FreeText
-        description: ''
-        required: false
-        value: 10s
-      - name: INFLUXDB_BUCKET
-        inputType: FreeText
-        description: ''
-        required: true
-        value: quixbucket
-      - name: INFLUXDB_TOKEN
-        inputType: Secret
-        description: ''
-        required: true
-        secretKey: influx_db
   - name: InfluxDB V3 Data Sink
     application: InfluxDB V3 Data Sink
     deploymentType: Service
