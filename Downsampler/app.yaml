@@ -9,7 +9,7 @@ variables:
   - name: output
     inputType: OutputTopic
     description: This is the output topic to write data to
-    defaultValue: influx2-data-transformedv2
+    defaultValue: influxdb-v3-downsampled
     required: true
   - name: data_key
     inputType: FreeText
