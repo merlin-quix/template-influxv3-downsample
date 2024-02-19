@@ -4,7 +4,7 @@ variables:
   - name: INFLUXDB_TAG_COLUMNS
     inputType: FreeText
     description: Name of the input topic to listen to.
-    defaultValue: '[]'
+    defaultValue: '{}'
     required: false
   - name: INFLUXDB_MEASUREMENT_NAME
     inputType: FreeText
