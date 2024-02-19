@@ -1,5 +1,6 @@
 import os
 import random
+import re
 import influxdb_client_3 as InfluxDBClient3
 from time import sleep
 
@@ -10,7 +11,7 @@ influxdb3_client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TO
                          database=os.environ["INFLUXDB_DATABASE"])
 
 measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", os.environ["output"])
-interval = os.environ.get("task_interval", "5m")
+interval = os.environ.get("task_interval", "5 minutes")
 
 # should the main loop run?
 # Global variable to control the main loop's execution
@@ -19,27 +20,35 @@ run = True
 # Helper function to convert time intervals (like 1h, 2m) into seconds for easier processing.
 # This function is useful for determining the frequency of certain operations.
 UNIT_SECONDS = {
-    "s": 1,
-    "m": 60,
-    "h": 3600,
-    "d": 86400,
-    "w": 604800,
-    "M": 2628000,
-    "y": 31536000,
+    "second": 1,
+    "minute": 60,
+    "hour": 3600,
+    "day": 86400,
+    "week": 604800,
+    "month": 2628000,  # Approximation, as actual values vary
+    "year": 31536000,
 }
 
 def interval_to_seconds(interval: str) -> int:
+    # Using regular expression to find numbers and text separately
+    match = re.match(r"(\d+)\s*(\w+)", interval)
+    if not match:
+        raise ValueError("Invalid interval format. Expected format is '{int} {unit}' i.e. '10 hours'.")
+    
+    # Extracting the number and unit from the match
+    number, unit = match.groups()
+    
+    # Converting the number to an integer
+    number = int(number)
+    
+    # Normalizing unit to singular form (assuming plural units are provided in a consistent manner)
+    unit = unit.rstrip('s')  # Removes trailing 's' to handle plurals, e.g., "minutes" -> "minute"
+    
     try:
-        return int(interval[:-1]) * UNIT_SECONDS[interval[-1]]
-    except ValueError as e:
-        if "invalid literal" in str(e):
-            raise ValueError(
-                "interval format is {int}{unit} i.e. '10h'; "
-                f"valid units: {list(UNIT_SECONDS.keys())}")
+        return number * UNIT_SECONDS[unit]
     except KeyError:
         raise ValueError(
-            f"Unknown interval unit: {interval[-1]}; "
-            f"valid units: {list(UNIT_SECONDS.keys())}")
+            f"Unknown interval unit: '{unit}'; valid units: {list(UNIT_SECONDS.keys())}")
 
 interval_seconds = interval_to_seconds(interval)
 
