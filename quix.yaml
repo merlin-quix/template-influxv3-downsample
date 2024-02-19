@@ -97,7 +97,7 @@ deployments:
         required: true
         secretKey: influx_db3
   - name: Downsampler
-    application: Down-sampling
+    application: Downsampler
     deploymentType: Service
     version: 9586eec53a997b34acf41fcfb06816b7499d275b
     resources:
