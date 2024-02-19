@@ -9,7 +9,7 @@ deployments:
   - name: InfluxDB V3 Data Source
     application: InfluxDB V3 Data Source
     deploymentType: Service
-    version: 3b19e36ebb635d75f9103a7afad8c4217f61f9a5
+    version: db288bd2c28662ca01a6bc344ac84ed5303f6fd7
     resources:
       cpu: 200
       memory: 500
@@ -20,7 +20,7 @@ deployments:
         inputType: OutputTopic
         description: Name of the output topic to write into
         required: true
-        value: activations-10ms-interval
+        value: activations-10ms-interval-v1
       - name: INFLUXDB_ORG
         inputType: FreeText
         description: ''
