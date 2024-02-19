@@ -1,9 +1,20 @@
+# Importing necessary libraries and modules
+from quixstreams import Application
+from quixstreams.models.serializers.quix import JSONSerializer, SerializationContext
 import os
 import random
-import re
 import influxdb_client_3 as InfluxDBClient3
 from time import sleep
 
+# Create an Application
+app = Application.Quix(consumer_group="influxdb_sample", auto_create_topics=True)
+
+# Define a serializer for messages, using JSON Serializer for ease
+serializer = JSONSerializer()
+
+# Define the topic using the "output" environment variable
+topic_name = os.environ["output"]
+topic = app.topic(topic_name)
 
 influxdb3_client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
                          host=os.environ["INFLUXDB_HOST"],
@@ -43,30 +54,70 @@ def interval_to_seconds(interval: str) -> int:
 
 interval_seconds = interval_to_seconds(interval)
 
-try:
-    myquery = f'SELECT * FROM "10ms_activations" WHERE time >= now() - {interval}'
-    print(f"sending query {myquery}")
-    # Query InfluxDB 3.0 using influxql or sql
-    table = influxdb3_client.query(
-                            query=myquery,
-                            mode="pandas",
-                            language="influxql")
+# Function to fetch data from InfluxDB and send it to Quix
+# It runs in a continuous loop, periodically fetching data based on the interval.
+def get_data():
+    # Run in a loop until the main thread is terminated
+    while run:
+        try:
+            myquery = f'SELECT * FROM "10ms_activations" WHERE time >= now() - {interval}'
+            print(f"sending query {myquery}")
+            # Query InfluxDB 3.0 using influxql or sql
+            table = influxdb3_client.query(
+                                    query=myquery,
+                                    mode="pandas",
+                                    language="influxql")
 
-    table = table.drop(columns=["iox::measurement"])
+            table = table.drop(columns=["iox::measurement"])
 
-    # If there are rows to write to the stream at this time
-    if not table.empty:
-        json_result = table.to_json(orient='records', date_format='iso')
-        print("query success")
-        print(f"Result: {json_result}")
-    else:
-        print("No new data to publish.")
+            # If there are rows to write to the stream at this time
+            if not table.empty:
+                json_result = table.to_json(orient='records', date_format='iso')
+                yield json_result
+                print("query success")
+            else:
+                print("No new data to publish.")
 
-    # Wait for the next interval
-    sleep(interval_seconds)
+            # Wait for the next interval
+            sleep(interval_seconds)
 
-except Exception as e:
-    print("query failed", flush=True)
-    print(f"error: {e}", flush=True)
-    sleep(1)
+        except Exception as e:
+            print("query failed", flush=True)
+            print(f"error: {e}", flush=True)
+            sleep(1)
 
+def main():
+    """
+    Read data from the Query and publish it to Kafka
+    """
+
+    # Create a pre-configured Producer object.
+    # Producer is already setup to use Quix brokers.
+    # It will also ensure that the topics exist before producing to them if
+    # Application.Quix is initialized with "auto_create_topics=True".
+    producer = app.get_producer()
+
+    with producer:
+    # Iterate over the data from query result
+        for obj in get_data():
+            # Generate a unique message_key for each row
+            message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
+
+            # Serialize row value to bytes
+            serialized_value = serializer(
+                value=obj ctx=SerializationContext(topic=topic.name)
+            )
+
+            # publish the data to the topic
+            producer.produce(
+                topic=topic.name,
+                key=message_key,
+                value=serialized_value,
+            )
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Exiting.")
