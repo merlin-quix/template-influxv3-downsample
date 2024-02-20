@@ -25,7 +25,7 @@ measurement_name = os.environ.get('INFLUXDB_MEASUREMENT_NAME', os.environ["input
 
 # Read the environment variable for the field(s) to get.
 # For multiple fields, use a list "[field1,field2]"
-field_keys = os.environ.get('field_keys', '[field1]')
+field_keys = ast.literal_eval(os.environ.get("field_keys", "['field1']"))
                                            
 influx3_client = InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
                          host=os.environ["INFLUXDB_HOST"],
