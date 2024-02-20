@@ -4,7 +4,7 @@ variables:
   - name: input
     inputType: InputTopic
     description: This is the input topic to read data from
-    defaultValue: activations-10ms-interval
+    defaultValue: activations-10ms-interval-v1
     required: true
   - name: output
     inputType: OutputTopic
