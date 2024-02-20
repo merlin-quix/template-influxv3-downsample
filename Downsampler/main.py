@@ -1,7 +1,7 @@
 from quixstreams import Application
 from quixstreams.models.serializers.quix import JSONDeserializer, JSONSerializer
 import os
-from datetime import timedelta
+from datetime import timedelta, datetime
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -18,12 +18,18 @@ sdf = app.dataframe(input_topic)
 sdf = sdf.update(lambda value: logger.info(f"Input value received: {value}"))
 sdf = sdf.update(lambda value: logger.info(f"Timeseries value is: {value[data_key]}"))
 
-def custom_ts_extractor():
+def custom_ts_extractor(value):
     """
     Specifying a custom timestamp extractor to use the timestamp from the message payload 
     instead of Kafka timestamp.
     """
-    original_time
+    # Convert to a datetime object
+    dt_obj = datetime.strptime(value["original_time"], "%Y-%m-%dT%H:%M:%S.%f")
+
+    # Convert to milliseconds since the Unix epoch
+    milliseconds = int(dt_obj.timestamp() * 1000)
+    value["timestamp"] = milliseconds
+
     return value["timestamp"]
 
 # Passing the timestamp extractor to the topic.
