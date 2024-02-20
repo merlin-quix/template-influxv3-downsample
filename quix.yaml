@@ -76,31 +76,6 @@ deployments:
         description: ''
         required: true
         value: activation
-  - name: Downsampler Current
-    application: Downsampler
-    deploymentType: Service
-    version: a849e28990c281d8c9e23b0b1c4e8485b6d554ba
-    resources:
-      cpu: 200
-      memory: 500
-      replicas: 1
-    desiredStatus: Stopped
-    variables:
-      - name: input
-        inputType: InputTopic
-        description: This is the input topic to read data from
-        required: true
-        value: activations-10ms-interval-v1
-      - name: output
-        inputType: OutputTopic
-        description: This is the output topic to write data to
-        required: true
-        value: activations-100ms-interval
-      - name: data_key
-        inputType: FreeText
-        description: ''
-        required: true
-        value: activation
   - name: InfluxDB V3 Data Sink
     application: InfluxDB V3 Data Sink
     deploymentType: Service
