@@ -40,6 +40,8 @@ def send_data_to_influx(message):
         # For multiple fields, use a list "[field1,field2]"
         field_keys = os.environ.get("field_keys", "['field1']")
 
+        logger.info(f"Using field keys: {field_keys}")
+
         # Using point dictionary structure
         # See: https://docs.influxdata.com/influxdb/cloud-dedicated/reference/client-libraries/v3/python/#write-data-using-a-dict
         points = {
