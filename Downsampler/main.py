@@ -18,6 +18,18 @@ sdf = app.dataframe(input_topic)
 sdf = sdf.update(lambda value: logger.info(f"Input value received: {value}"))
 sdf = sdf.update(lambda value: logger.info(f"Timeseries value is: {value[data_key]}"))
 
+def custom_ts_extractor()
+    """
+    Specifying a custom timestamp extractor to use the timestamp from the message payload 
+    instead of Kafka timestamp.
+    """
+    return value["timestamp"]
+
+# Passing the timestamp extractor to the topic.
+
+# The window functions will now use the extracted timestamp instead of the Kafka timestamp.
+topic = app.topic("input-topic", timestamp_extractor=custom_ts_extractor)
+
 sdf = (
     # Extract the relevant field from the record
     sdf.apply(lambda value: value[data_key])
