@@ -7,7 +7,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = Application.Quix(consumer_group="downsampling-consumer-groupv5", auto_offset_reset="earliest")
+app = Application.Quix(consumer_group="downsampling-consumer-groupv6", auto_offset_reset="earliest")
 input_topic = app.topic(os.environ["input"], value_deserializer=JSONDeserializer())
 output_topic = app.topic(os.environ["output"], value_serializer=JSONSerializer())
 
@@ -48,8 +48,8 @@ sdf = (
     .mean()
 
     # Emit results only when the 100-millisecond window has elapsed
-    #.final()
-    .current() #for debug purposes.
+    .final()
+    #.current() #for debug purposes.
 )
 
 sdf = sdf.apply(
