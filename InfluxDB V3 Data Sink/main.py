@@ -1,25 +1,31 @@
-from quixstreams import Application
-from quixstreams.models.serializers.quix import JSONDeserializer
+# import Utility modules
 import os
-from influxdb_client_3 import InfluxDBClient3
 import ast
 import datetime
 import logging
 
+# import vendor-specific modules
+from quixstreams import Application
+from quixstreams.models.serializers.quix import JSONDeserializer
+from influxdb_client_3 import InfluxDBClient3
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = Application.Quix(consumer_group="influx-destinationv1",
+app = Application.Quix(consumer_group="influx-destination",
                        auto_offset_reset="earliest")
 
 input_topic = app.topic(os.environ["input"], value_deserializer=JSONDeserializer())
 
-# Read the environment variable and convert it to a list
+# Read the environment variable and convert it to a dictionary
 tag_dict = ast.literal_eval(os.environ.get('INFLUXDB_TAG_COLUMNS', "{}"))
 
-# Read the environment variable for measurement name and convert it to a list
+# Read the environment variable for measurement name
 measurement_name = os.environ.get('INFLUXDB_MEASUREMENT_NAME', os.environ["input"])
-data_key = os.environ.get('data_key', 'activiation')
+
+# Read the environment variable for the field(s) to get.
+# For multiple fields, use a list "[field1,field2]"
+field_keys = os.environ.get('field_keys', '[field1]')
                                            
 influx3_client = InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
                          host=os.environ["INFLUXDB_HOST"],
@@ -30,13 +36,17 @@ def send_data_to_influx(message):
     logger.info(f"Processing message: {message}")
     try:
         quixtime = message['time']
-        data_value = message[data_key]
+        # Get the name(s) and value(s) of the selected field(s)
+        # Using just a single field in this example for simplicity
+        field1_name = field_keys[0]
+        field1_value = message[field_keys[0]]
 
         # Using point dictionary structure
+        # See: https://docs.influxdata.com/influxdb/cloud-dedicated/reference/client-libraries/v3/python/#write-data-using-a-dict
         points = {
             "measurement": measurement_name,
             "tags": tag_dict,
-            "fields": {data_key: data_value},
+            "fields": {field1_name: field1_value},
             "time": quixtime
         }
 
