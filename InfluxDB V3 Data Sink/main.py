@@ -41,7 +41,7 @@ def send_data_to_influx(message):
         field1_name = field_keys[0]
         field1_value = message[field_keys[0]]
 
-        logger.info(f"Using field keys: {field_keys}")
+        logger.info(f"Using field keys: {', '.join(field_keys)}")
 
         # Using point dictionary structure
         # See: https://docs.influxdata.com/influxdb/cloud-dedicated/reference/client-libraries/v3/python/#write-data-using-a-dict
@@ -54,7 +54,7 @@ def send_data_to_influx(message):
 
         influx3_client.write(record=points, write_precision="ms")
         
-        print(f"{str(datetime.datetime.utcnow())}: Persisted measurement to influx.")
+        print(f"{str(datetime.datetime.utcnow())}: Persisted points to influx: {points}")
     except Exception as e:
         print(f"{str(datetime.datetime.utcnow())}: Write failed")
         print(e)
