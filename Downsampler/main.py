@@ -16,7 +16,6 @@ logger.info(f"Data key is: {data_key}")
 
 sdf = app.dataframe(input_topic)
 sdf = sdf.update(lambda value: logger.info(f"Input value received: {value}"))
-sdf = sdf.update(lambda value: logger.info(f"Timeseries value is: {value[data_key]}"))
 
 def custom_ts_extractor(value):
     """
