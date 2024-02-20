@@ -36,10 +36,9 @@ def send_data_to_influx(message):
     logger.info(f"Processing message: {message}")
     try:
         quixtime = message['time']
-        # Get the name(s) and value(s) of the selected field(s)
-        # Using just a single field in this example for simplicity
-        field1_name = field_keys[0]
-        field1_value = message[field_keys[0]]
+        # Read the environment variable for the field(s) to get.
+        # For multiple fields, use a list "[field1,field2]"
+        field_keys = os.environ.get("field_keys", "['field1']")
 
         # Using point dictionary structure
         # See: https://docs.influxdata.com/influxdb/cloud-dedicated/reference/client-libraries/v3/python/#write-data-using-a-dict
