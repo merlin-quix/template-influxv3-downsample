@@ -29,7 +29,7 @@ def custom_ts_extractor(value):
     # Convert to milliseconds since the Unix epoch
     milliseconds = int(dt_obj.timestamp() * 1000)
     value["timestamp"] = milliseconds
-
+    logger.info(f"Value of new timestamp is: {value['timestamp']}")
     return value["timestamp"]
 
 # Passing the timestamp extractor to the topic.
