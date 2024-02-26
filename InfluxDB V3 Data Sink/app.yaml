@@ -1,10 +1,10 @@
 name: InfluxDB V3 Data Sink
 language: python
 variables:
-  - name: INFLUXDB_TAG_COLUMNS
+  - name: INFLUXDB_TAG_KEYS
     inputType: FreeText
     description: 'A dictonary containing tags and their expected values. E.g {"room": "Kitchen", "sensor": "K001"}'
-    defaultValue: '{}'
+    defaultValue: '[]'
     required: false
   - name: INFLUXDB_MEASUREMENT_NAME
     inputType: FreeText
