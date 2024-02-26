@@ -4,7 +4,7 @@ variables:
   - name: output
     inputType: OutputTopic
     description: Name of the output topic to write into
-    defaultValue: machine-temperature
+    defaultValue: machine-temperature-v2
     required: true
   - name: INFLUXDB_ORG
     inputType: FreeText
