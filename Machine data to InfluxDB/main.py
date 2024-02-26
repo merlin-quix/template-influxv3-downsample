@@ -29,7 +29,7 @@ start_time = datetime.datetime.now()
 
 # Current time for the loop
 measurement_name = os.environ['INFLUXDB_MEASUREMENT_NAME']
-database = os.environ["INFLUXDB_BUCKET"]
+database = os.environ["INFLUXDB_DATABASE"]
 
 class machine():
     def __init__(self) -> None:
