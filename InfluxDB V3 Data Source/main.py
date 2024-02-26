@@ -76,7 +76,7 @@ def get_data():
                                     language="influxql")
 
             table = table.drop(columns=["iox::measurement"])
-            table.rename(columns={'time': 'original_time'}, inplace=True)
+            table.rename(columns={'time': 'time_recorded'}, inplace=True)
             # If there are rows to write to the stream at this time
             if not table.empty:
                 json_result = table.to_json(orient='records', date_format='iso')
