@@ -14,15 +14,6 @@ import logging
 from influxdb_client_3 import InfluxDBClient3, Point
 from faker import Faker
 
-###
-os.environ['INFLUXDB_TOKEN'] = "Rml8C4v2Wew7qnv-gOXsM25B8JEHr-g1YSB79T29w_5VdwEuXWK6IoNk2O7o1WEqQnagkyDX_VAYfA33RFd4Xw=="
-os.environ['INFLUXDB_HOST'] = "https://us-east-1-1.aws.cloud2.influxdata.com/"
-os.environ['INFLUXDB_ORG'] = "ContentSquad"
-os.environ["INFLUXDB_BUCKET"] = "machine-generator-data"
-os.environ['INFLUXDB_MEASUREMENT_NAME'] = "temperature"
-os.environ['task_interval'] = "500m"
-###
-
 # Initialize logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
