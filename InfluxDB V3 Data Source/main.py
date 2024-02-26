@@ -23,7 +23,7 @@ serializer = JSONSerializer()
 
 # Define the topic using the "output" environment variable
 topic_name = os.environ["output"]
-topic = app.topic(topic_name)
+topic = app.topic(name=topic_name, value_serializer="json")
 
 influxdb3_client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
                          host=os.environ["INFLUXDB_HOST"],
@@ -111,23 +111,19 @@ def main():
             records = json.loads(res)
             for index, obj in enumerate(records):
                 # Generate a unique message_key for each row
-                message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
+                message_key = obj['metadata']['machineID']
                 logger.info(f"Produced message with key:{message_key}, value:{obj}")
 
                 serialized = topic.serialize(
-                    key=account_id, value=value, headers={"uuid": str(uuid.uuid4())}
+                    key=message_key, value=obj, headers={"uuid": str(uuid.uuid4())}
                     )
-
-                # Serialize row value to bytes
-                serialized_value = serializer(
-                    value=obj, ctx=SerializationContext(topic=topic.name)
-                )
 
                 # publish the data to the topic
                 producer.produce(
                     topic=topic.name,
-                    key=message_key,
-                    value=serialized_value,
+                    headers=serialized.headers,
+                    key=serialized.key,
+                    value=serialized.value,
                 )
 
 if __name__ == "__main__":
