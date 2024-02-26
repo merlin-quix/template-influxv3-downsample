@@ -41,7 +41,7 @@ def send_data_to_influx(message):
         writetime = datetime.datetime.utcnow()
         writetime = writetime.isoformat(timespec='milliseconds') + 'Z'
         
-        measurement_name = message['_measurement']
+        measurement_name = os.environ.get('INFLUXDB_MEASUREMENT_NAME', "measurement1")
 
         # Initialize the tags and fields dictionaries
         tags = {}
