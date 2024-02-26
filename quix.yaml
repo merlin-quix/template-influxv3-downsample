@@ -129,7 +129,7 @@ deployments:
   - name: Write raw machine data to InfluxDB 3.0
     application: Machine data to InfluxDB
     deploymentType: Service
-    version: d1e5a8f25a5c4bf7bc6e38a18d8dbea679457e45
+    version: 5531d9dcb0452fddd582c81ae8e8c39db469c93b
     resources:
       cpu: 200
       memory: 500
