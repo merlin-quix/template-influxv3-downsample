@@ -9,7 +9,7 @@ deployments:
   - name: InfluxDB V3 Data Source
     application: InfluxDB V3 Data Source
     deploymentType: Service
-    version: 0f062fc2d7250c7a2a7750704dad982819982110
+    version: dd26332cc38cdea5fc37c71908cbba4f486db5f6
     resources:
       cpu: 200
       memory: 500
