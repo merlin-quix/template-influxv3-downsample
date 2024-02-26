@@ -19,7 +19,7 @@ variables:
   - name: INFLUXDB_MEASUREMENT_NAME
     inputType: FreeText
     description: ''
-    defaultValue: 10ms_activations
+    defaultValue: h2o_temperature
     required: true
   - name: task_interval
     inputType: FreeText
