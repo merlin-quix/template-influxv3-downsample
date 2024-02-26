@@ -24,7 +24,7 @@ variables:
   - name: INFLUXDB_DATABASE
     inputType: FreeText
     description: ''
-    defaultValue: connector-testing-sink
+    defaultValue: machine-generator-data
     required: true
   - name: input
     inputType: InputTopic
