@@ -36,7 +36,7 @@ variables:
     description: ''
     defaultValue: influx_db3
     required: true
-  - name: field_keys
+  - name: INFLUXDB_FIELD_KEYS
     inputType: FreeText
     description: ''
     defaultValue: "['temperature']"
