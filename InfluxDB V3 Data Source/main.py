@@ -1,20 +1,19 @@
-# Import basic utilities
+# Importing necessary libraries and modules
 import os
 import random
 import json
 import logging
-from time import sleep
 
-# import vendor-specfic modules
 from quixstreams import Application
 from quixstreams.models.serializers.quix import JSONSerializer, SerializationContext
-import influxdb_client
+import influxdb_client_3 as InfluxDBClient3
+from time import sleep
 
 # Initialize logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Create a Quix Application
+# Create an Application
 app = Application.Quix(consumer_group="influxdbv3_source", auto_create_topics=True)
 
 # Define a serializer for messages, using JSON Serializer for ease
@@ -24,15 +23,15 @@ serializer = JSONSerializer()
 topic_name = os.environ["output"]
 topic = app.topic(topic_name)
 
-influxdb2_client = influxdb_client.InfluxDBClient(token=os.environ["INFLUXDB_TOKEN"],
-                        org=os.environ["INFLUXDB_ORG"],
-                        url=os.environ['INFLUXDB_HOST'])
+influxdb3_client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
+                         host=os.environ["INFLUXDB_HOST"],
+                         org=os.environ["INFLUXDB_ORG"],
+                         database=os.environ["INFLUXDB_DATABASE"])
 
-query_api = influxdb2_client.query_api()
-
+measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", os.environ["output"])
 interval = os.environ.get("task_interval", "5m")
-bucket = os.environ.get("INFLUXDB_BUCKET", "placeholder-bucket")
 
+# should the main loop run?
 # Global variable to control the main loop's execution
 run = True
 
@@ -62,51 +61,36 @@ def interval_to_seconds(interval: str) -> int:
 
 interval_seconds = interval_to_seconds(interval)
 
-
-def is_dataframe(result):
-    return type(result).__name__ == 'DataFrame'
-
 # Function to fetch data from InfluxDB and send it to Quix
 # It runs in a continuous loop, periodically fetching data based on the interval.
 def get_data():
     # Run in a loop until the main thread is terminated
     while run:
-        try:            
-            # Query InfluxDB 2.0 using flux
-            flux_query = f'''
-            from(bucket: "{bucket}")
-                |> range(start: -{interval})
-                |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
-            '''
-            logger.info(f"Sending query: {flux_query}")
+        try:
+            myquery = f'SELECT * FROM "{measurement_name}" WHERE time >= now() - {interval}'
+            print(f"sending query {myquery}")
+            # Query InfluxDB 3.0 using influxql or sql
+            table = influxdb3_client.query(
+                                    query=myquery,
+                                    mode="pandas",
+                                    language="influxql")
 
-            table = query_api.query_data_frame(query=flux_query,org=os.environ['INFLUXDB_ORG'])
+            table = table.drop(columns=["iox::measurement"])
+            table.rename(columns={'time': 'original_time'}, inplace=True)
+            # If there are rows to write to the stream at this time
+            if not table.empty:
+                json_result = table.to_json(orient='records', date_format='iso')
+                yield json_result
+                print("query success")
+            else:
+                print("No new data to publish.")
 
-            # Renaming time column to distinguish it from other timestamp types
-            # table.rename(columns={'_time': 'original_time'}, inplace=True)
-
-            # If the query returns tables with different schemas, the result will be a list of dataframes.
-            if isinstance(table, list):
-                for item in table:
-                    item.rename(columns={'_time': 'original_time'}, inplace=True)
-                    json_result = item.to_json(orient='records', date_format='iso')
-                    yield json_result
-                    logger.info("Published multiple measurements to Quix")
-            elif is_dataframe(table) and len(table) > 0:
-                    table.rename(columns={'_time': 'original_time'}, inplace=True)
-                    json_result = table.to_json(orient='records', date_format='iso')
-                    yield json_result
-                    logger.info("Published single measurement to Quix")
-            elif is_dataframe(table) and len(table) < 1:
-                    logger.info("No results.")
-
-            logger.info(f"Trying again in {interval_seconds} seconds...")
+            # Wait for the next interval
             sleep(interval_seconds)
 
         except Exception as e:
-            logger.info("query failed")
-            logger.info(f"error: {e}")
-            flush=True
+            print("query failed", flush=True)
+            print(f"error: {e}", flush=True)
             sleep(1)
 
 def main():
@@ -126,7 +110,7 @@ def main():
             records = json.loads(res)
             for index, obj in enumerate(records):
                 # Generate a unique message_key for each row
-                message_key = f"INFLUX2_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
+                message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
                 logger.info(f"Produced message with key:{message_key}, value:{obj}")
 
                 # Serialize row value to bytes
@@ -145,4 +129,4 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        logger.info("Exiting.")
+        print("Exiting.")
