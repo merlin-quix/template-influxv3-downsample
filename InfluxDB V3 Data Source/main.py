@@ -110,6 +110,7 @@ def main():
             # Parse the JSON string into a Python object
             records = json.loads(res)
             for index, obj in enumerate(records):
+                print(obj)
                 # Generate a unique message_key for each row
                 message_key = obj['metadata']['machineID']
                 logger.info(f"Produced message with key:{message_key}, value:{obj}")
