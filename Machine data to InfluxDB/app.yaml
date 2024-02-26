@@ -1,11 +1,6 @@
 name: Write raw machine data to InfluxDB 3.0
 language: python
 variables:
-  - name: input
-    inputType: InputTopic
-    description: This is the input topic
-    defaultValue: detection-result
-    required: true
   - name: INFLUXDB_HOST
     inputType: FreeText
     description: Host address for the InfluxDB instance.
