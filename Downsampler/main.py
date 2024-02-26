@@ -40,13 +40,13 @@ sdf = (
     # Extract the relevant field from the record
     sdf.apply(lambda value: value[data_key])
 
-    # Define a tumbling window of 100 milliseconds to reduce 10ms data to 100ms
+    # Define a tumbling window of 1 minute
     .tumbling_window(timedelta(minutes=1))
 
     # Specify the "mean" aggregation function to apply to values of the data key
     .mean()
 
-    # Emit results only when the 100-millisecond window has elapsed
+    # Emit results only when the 1 minute window has elapsed
     .final()
     #.current() #for debug purposes.
 )
