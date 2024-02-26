@@ -14,7 +14,13 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Create an Application
-app = Application.Quix(consumer_group="influxdbv3_source", auto_create_topics=True)
+#app = Application.Quix(consumer_group="influxdbv3_source", auto_create_topics=True)
+
+app = Application(
+    broker_address=os.environ["BROKER_ADDRESS"],
+    consumer_group="json__purchase_notifier",
+    auto_offset_reset="earliest",
+)
 
 # Define a serializer for messages, using JSON Serializer for ease
 serializer = JSONSerializer()
