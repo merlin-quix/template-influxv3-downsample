@@ -84,18 +84,18 @@ deployments:
   - name: InfluxDB V3 Data Sink
     application: InfluxDB V3 Data Sink
     deploymentType: Service
-    version: 1f43697ccbf6ececcea88f5c472a1935eb8c9c4d
+    version: b2fdb01a2edcb5c0f0d0606c01efeaf44ebd580c
     resources:
       cpu: 200
       memory: 500
       replicas: 1
     desiredStatus: Stopped
     variables:
-      - name: INFLUXDB_TAG_COLUMNS
+      - name: INFLUXDB_TAG_KEYS
         inputType: FreeText
         description: 'A dictonary containing tags and their expected values. E.g {"room": "Kitchen", "sensor": "K001"}'
         required: false
-        value: '{}'
+        value: '[]'
       - name: INFLUXDB_MEASUREMENT_NAME
         inputType: FreeText
         description: ''
@@ -126,11 +126,16 @@ deployments:
         description: ''
         required: true
         secretKey: influx_db3
-      - name: data_key
+      - name: INFLUXDB_FIELD_KEYS
         inputType: FreeText
         description: ''
         required: true
-        value: temperature
+        value: "['temperature']"
+      - name: CONSUMER_GROUP_NAME
+        inputType: FreeText
+        description: ''
+        required: false
+        value: influxdb-data-writer
   - name: Write raw machine data to InfluxDB 3.0
     application: Machine data to InfluxDB
     deploymentType: Service
