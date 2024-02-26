@@ -35,12 +35,12 @@ deployments:
         inputType: FreeText
         description: ''
         required: true
-        value: machine-health
+        value: machine-health-v2
       - name: task_interval
         inputType: FreeText
         description: ''
         required: false
-        value: 5m
+        value: 1m
       - name: INFLUXDB_DATABASE
         inputType: FreeText
         description: ''
