@@ -3,11 +3,13 @@ import os
 import random
 import json
 import logging
+import uuid
+from time import sleep
 
 from quixstreams import Application
 from quixstreams.models.serializers.quix import JSONSerializer, SerializationContext
 import influxdb_client_3 as InfluxDBClient3
-from time import sleep
+
 
 # Initialize logging
 logging.basicConfig(level=logging.INFO)
@@ -111,6 +113,10 @@ def main():
                 # Generate a unique message_key for each row
                 message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
                 logger.info(f"Produced message with key:{message_key}, value:{obj}")
+
+                serialized = topic.serialize(
+                    key=account_id, value=value, headers={"uuid": str(uuid.uuid4())}
+                    )
 
                 # Serialize row value to bytes
                 serialized_value = serializer(
