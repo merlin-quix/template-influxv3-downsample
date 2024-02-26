@@ -35,7 +35,7 @@ deployments:
         inputType: FreeText
         description: ''
         required: true
-        value: machine-health-v2
+        value: machine-health
       - name: task_interval
         inputType: FreeText
         description: ''
