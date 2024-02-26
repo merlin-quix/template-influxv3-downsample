@@ -9,7 +9,7 @@ variables:
   - name: INFLUXDB_MEASUREMENT_NAME
     inputType: FreeText
     description: ''
-    defaultValue: machine-temp-downsampled
+    defaultValue: machine-temp-downsampled-v2
     required: true
   - name: INFLUXDB_HOST
     inputType: FreeText
