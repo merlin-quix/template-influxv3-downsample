@@ -41,7 +41,7 @@ sdf = (
     sdf.apply(lambda value: value[data_key])
 
     # Define a tumbling window of 100 milliseconds to reduce 10ms data to 100ms
-    .tumbling_window(timedelta(milliseconds=60000))
+    .tumbling_window(timedelta(minutes=1))
 
     # Specify the "mean" aggregation function to apply to values of the data key
     .mean()
