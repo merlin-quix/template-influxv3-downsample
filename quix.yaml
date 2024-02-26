@@ -84,7 +84,7 @@ deployments:
   - name: InfluxDB V3 Data Sink
     application: InfluxDB V3 Data Sink
     deploymentType: Service
-    version: b2fdb01a2edcb5c0f0d0606c01efeaf44ebd580c
+    version: 013117bbe4c48b7112e5e57b2b8442c5d0506a40
     resources:
       cpu: 200
       memory: 500
@@ -100,7 +100,7 @@ deployments:
         inputType: FreeText
         description: ''
         required: true
-        value: machine-temp-downsampled
+        value: machine-temp-downsampled-v2
       - name: INFLUXDB_HOST
         inputType: FreeText
         description: ''
@@ -120,7 +120,7 @@ deployments:
         inputType: InputTopic
         description: ''
         required: true
-        value: machine-temperature-downsampled-v2
+        value: machine-temperature-downsampled-v3
       - name: INFLUXDB_TOKEN
         inputType: Secret
         description: ''
@@ -135,7 +135,7 @@ deployments:
         inputType: FreeText
         description: ''
         required: false
-        value: influxdb-data-writer
+        value: influxdb-data-writer-v2
   - name: Write raw machine data to InfluxDB 3.0
     application: Machine data to InfluxDB
     deploymentType: Service
