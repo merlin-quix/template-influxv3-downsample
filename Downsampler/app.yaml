@@ -14,7 +14,7 @@ variables:
   - name: data_key
     inputType: FreeText
     description: ''
-    defaultValue: activation
+    defaultValue: temperature
     required: true
 dockerfile: dockerfile
 runEntryPoint: main.py
