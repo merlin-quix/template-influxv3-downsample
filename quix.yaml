@@ -70,17 +70,17 @@ deployments:
         inputType: InputTopic
         description: This is the input topic to read data from
         required: true
-        value: activations-10ms-interval-v1
+        value: machine-temperature
       - name: output
         inputType: OutputTopic
         description: This is the output topic to write data to
         required: true
-        value: activations-100ms-interval
+        value: machine-temperature-downsampled
       - name: data_key
         inputType: FreeText
         description: ''
         required: true
-        value: activation
+        value: temperature
   - name: InfluxDB V3 Data Sink
     application: InfluxDB V3 Data Sink
     deploymentType: Service
