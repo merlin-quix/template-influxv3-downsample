@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Application(
-    broker_address=environ["BROKER_ADDRESS"],
+    broker_address=os.environ["BROKER_ADDRESS"],
     consumer_group="json__purchase_notifier",
     auto_offset_reset="earliest",
 )
