@@ -41,6 +41,11 @@ variables:
     description: The fields to include when writing the measurement data
     defaultValue: "['field1','field2']"
     required: true
+  - name: BROKER_ADDRESS
+    inputType: FreeText
+    description: ''
+    defaultValue: publickafka.quix.io
+    required: true
 dockerfile: dockerfile
 runEntryPoint: main.py
 defaultFile: main.py
