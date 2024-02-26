@@ -29,7 +29,7 @@ variables:
   - name: INFLUXDB_DATABASE
     inputType: FreeText
     description: ''
-    defaultValue: ConnectorTesting
+    defaultValue: noaa-water-sample
     required: true
   - name: INFLUXDB_TOKEN
     inputType: Secret
