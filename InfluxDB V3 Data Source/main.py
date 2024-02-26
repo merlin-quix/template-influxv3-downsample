@@ -112,7 +112,7 @@ def main():
             for index, obj in enumerate(records):
                 print(obj)
                 # Generate a unique message_key for each row
-                message_key = obj['metadata']['machineID']
+                message_key = obj['machineId']
                 logger.info(f"Produced message with key:{message_key}, value:{obj}")
 
                 serialized = topic.serialize(
