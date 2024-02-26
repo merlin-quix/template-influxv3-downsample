@@ -100,7 +100,7 @@ deployments:
         inputType: FreeText
         description: ''
         required: true
-        value: 100ms_activations
+        value: machine-health
       - name: INFLUXDB_HOST
         inputType: FreeText
         description: ''
@@ -115,12 +115,12 @@ deployments:
         inputType: FreeText
         description: ''
         required: true
-        value: connector-testing-sink
+        value: machine-generator-data
       - name: input
         inputType: InputTopic
         description: ''
         required: true
-        value: activations-100ms-interval
+        value: machine-temperature-downsampled
       - name: INFLUXDB_TOKEN
         inputType: Secret
         description: ''
@@ -130,7 +130,7 @@ deployments:
         inputType: FreeText
         description: ''
         required: true
-        value: activation
+        value: temperature
   - name: Write raw machine data to InfluxDB 3.0
     application: Machine data to InfluxDB
     deploymentType: Service
