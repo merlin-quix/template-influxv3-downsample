@@ -9,7 +9,7 @@ variables:
   - name: output
     inputType: OutputTopic
     description: This is the output topic to write data to
-    defaultValue: activations-100ms-interval
+    defaultValue: machine-temperature-downsampled
     required: true
   - name: data_key
     inputType: FreeText
