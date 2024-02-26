@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Create a Quix Application
-app = Application.Quix(consumer_group="influxdbv2_migrate", auto_create_topics=True)
+app = Application.Quix(consumer_group="influxdbv3_source", auto_create_topics=True)
 
 # Define a serializer for messages, using JSON Serializer for ease
 serializer = JSONSerializer()
