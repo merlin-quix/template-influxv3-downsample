@@ -151,8 +151,6 @@ def runMachine(m):
         check_machine = m.returnMachineHealth()
         timestamp_str = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
 
-        print(f"Converting check_machine: {check_machine}")
-
         point = {
             "measurement": measurement_name,
             "tags": {
