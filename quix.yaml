@@ -120,7 +120,7 @@ deployments:
         inputType: InputTopic
         description: ''
         required: true
-        value: machine-temperature-downsampled
+        value: machine-temperature-downsampled-v2
       - name: INFLUXDB_TOKEN
         inputType: Secret
         description: ''
