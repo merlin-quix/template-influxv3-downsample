@@ -39,7 +39,7 @@ variables:
   - name: field_keys
     inputType: FreeText
     description: ''
-    defaultValue: "['activation']"
+    defaultValue: "['temperature']"
     required: true
 dockerfile: dockerfile
 runEntryPoint: main.py
