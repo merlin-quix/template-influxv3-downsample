@@ -70,12 +70,12 @@ deployments:
         inputType: InputTopic
         description: This is the input topic to read data from
         required: true
-        value: machine-temperature
+        value: machine-temperature-v2
       - name: output
         inputType: OutputTopic
         description: This is the output topic to write data to
         required: true
-        value: machine-temperature-downsampled
+        value: machine-temperature-downsampled-v2
       - name: data_key
         inputType: FreeText
         description: ''
