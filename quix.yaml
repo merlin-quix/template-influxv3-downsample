@@ -59,7 +59,7 @@ deployments:
   - name: Downsampler
     application: Downsampler
     deploymentType: Service
-    version: e7d3806f86815c836d7d3976a3eb495ec95b2c1a
+    version: 097d3df3dc89eb34b303ba12da29b3651c25e6b0
     resources:
       cpu: 200
       memory: 500
@@ -75,7 +75,7 @@ deployments:
         inputType: OutputTopic
         description: This is the output topic to write data to
         required: true
-        value: machine-temperature-downsampled-v2
+        value: machine-temperature-downsampled-v3
       - name: data_key
         inputType: FreeText
         description: ''
