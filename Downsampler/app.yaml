@@ -9,7 +9,7 @@ variables:
   - name: output
     inputType: OutputTopic
     description: This is the output topic to write data to
-    defaultValue: machine-temperature-downsampled
+    defaultValue: machine-temperature-downsampled-v3
     required: true
   - name: data_key
     inputType: FreeText
