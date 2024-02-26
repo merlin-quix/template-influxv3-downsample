@@ -67,7 +67,7 @@ def get_data():
     # Run in a loop until the main thread is terminated
     while run:
         try:
-            myquery = f'SELECT * FROM "{measurement_name}" WHERE time >= now() -' + " interval '10 years'"
+            myquery = f'SELECT * FROM "{measurement_name}" WHERE time >= 10000d"
             print(f"sending query {myquery}")
             # Query InfluxDB 3.0 using influxql or sql
             table = influxdb3_client.query(
