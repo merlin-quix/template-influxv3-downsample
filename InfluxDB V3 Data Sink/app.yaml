@@ -29,7 +29,7 @@ variables:
   - name: input
     inputType: InputTopic
     description: ''
-    defaultValue: activations-100ms-interval
+    defaultValue: machine-temperature-downsampled
     required: true
   - name: INFLUXDB_TOKEN
     inputType: Secret
