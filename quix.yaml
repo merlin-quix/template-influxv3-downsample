@@ -126,6 +126,56 @@ deployments:
         description: ''
         required: true
         value: activation
+  - name: Write raw machine data to InfluxDB 3.0
+    application: Machine data to InfluxDB
+    deploymentType: Service
+    version: d1e5a8f25a5c4bf7bc6e38a18d8dbea679457e45
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    desiredStatus: Running
+    variables:
+      - name: INFLUXDB_HOST
+        inputType: FreeText
+        description: Host address for the InfluxDB instance.
+        required: true
+        value: https://us-east-1-1.aws.cloud2.influxdata.com
+      - name: INFLUXDB_TOKEN
+        inputType: Secret
+        description: Authentication token to access InfluxDB.
+        required: true
+        secretKey: influx_db3
+      - name: INFLUXDB_ORG
+        inputType: FreeText
+        description: Organization name in InfluxDB.
+        required: false
+        value: ContentSquad
+      - name: INFLUXDB_DATABASE
+        inputType: FreeText
+        description: Database name in InfluxDB where data should be stored.
+        required: true
+        value: machine-generator-data
+      - name: INFLUXDB_TAG_COLUMNS
+        inputType: FreeText
+        description: Columns to be used as tags when writing data to InfluxDB.
+        required: false
+        value: "['tag1', 'tag2']"
+      - name: INFLUXDB_MEASUREMENT_NAME
+        inputType: FreeText
+        description: The InfluxDB measurement to write data to. If not specified, the name of the input topic will be used
+        required: false
+        value: machine-health
+      - name: INFLUXDB_FIELD_KEYS
+        inputType: FreeText
+        description: The fields to include when writing the measurement data
+        required: true
+        value: "['field1','field2']"
+      - name: BROKER_ADDRESS
+        inputType: FreeText
+        description: ''
+        required: true
+        value: publickafka.quix.io
 
 # This section describes the Topics of the data pipeline
 topics:
