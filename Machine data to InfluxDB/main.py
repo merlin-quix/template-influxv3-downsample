@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 app = Application(
     broker_address=os.environ["BROKER_ADDRESS"],
-    consumer_group="json__purchase_notifier",
+    consumer_group=os.environ.get('CONSUMER_GROUP', 'machine-data-consumer'),
     auto_offset_reset="earliest",
 )
 
