@@ -9,7 +9,7 @@ deployments:
   - name: InfluxDB V3 Data Source
     application: InfluxDB V3 Data Source
     deploymentType: Service
-    version: db288bd2c28662ca01a6bc344ac84ed5303f6fd7
+    version: 5543104e5269b8c0697b070868ae06fa4da3807c
     resources:
       cpu: 200
       memory: 500
@@ -20,7 +20,7 @@ deployments:
         inputType: OutputTopic
         description: Name of the output topic to write into
         required: true
-        value: activations-10ms-interval-v1
+        value: water-temp-30min-samples
       - name: INFLUXDB_ORG
         inputType: FreeText
         description: ''
@@ -35,17 +35,17 @@ deployments:
         inputType: FreeText
         description: ''
         required: true
-        value: 10ms_activations
+        value: h2o_temperature
       - name: task_interval
         inputType: FreeText
         description: ''
         required: false
-        value: 5m
+        value: 10y
       - name: INFLUXDB_DATABASE
         inputType: FreeText
         description: ''
         required: true
-        value: ConnectorTesting
+        value: noaa-water-sample
       - name: INFLUXDB_TOKEN
         inputType: Secret
         description: ''
