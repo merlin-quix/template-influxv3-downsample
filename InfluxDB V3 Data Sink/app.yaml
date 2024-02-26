@@ -41,6 +41,11 @@ variables:
     description: ''
     defaultValue: "['temperature']"
     required: true
+  - name: CONSUMER_GROUP_NAME
+    inputType: FreeText
+    description: ''
+    defaultValue: influxdb-data-writer
+    required: false
 dockerfile: dockerfile
 runEntryPoint: main.py
 defaultFile: main.py
