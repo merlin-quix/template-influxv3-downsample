@@ -23,7 +23,7 @@ def custom_ts_extractor(value):
     instead of Kafka timestamp.
     """
     # Convert to a datetime object
-    dt_obj = datetime.strptime(value["original_time"], "%Y-%m-%dT%H:%M:%S.%f")
+    dt_obj = datetime.strptime(value["time_recorded"], "%Y-%m-%dT%H:%M:%S.%f")
 
     # Convert to milliseconds since the Unix epoch
     milliseconds = int(dt_obj.timestamp() * 1000)
@@ -41,7 +41,7 @@ sdf = (
     sdf.apply(lambda value: value[data_key])
 
     # Define a tumbling window of 100 milliseconds to reduce 10ms data to 100ms
-    .tumbling_window(timedelta(milliseconds=100))
+    .tumbling_window(timedelta(milliseconds=60000))
 
     # Specify the "mean" aggregation function to apply to values of the data key
     .mean()
