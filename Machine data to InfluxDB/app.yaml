@@ -46,11 +46,6 @@ variables:
     description: ''
     defaultValue: publickafka.quix.io
     required: true
-  - name: CONSUMER_GROUP
-    inputType: FreeText
-    description: ''
-    defaultValue: machine-data-consumer
-    required: false
 dockerfile: dockerfile
 runEntryPoint: main.py
 defaultFile: main.py
